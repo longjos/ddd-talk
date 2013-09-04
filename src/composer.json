@@ -1,0 +1,17 @@
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/longjos/Tracks"
+        },
+        {
+            "type": "composer",
+            "url": "https://packages.zendframework.com/"
+        }
+    ],
+    "require": {
+        "Tracks": "dev-Zdb2",
+        "slim/slim": "2.*",
+        "zendframework/zend-db": "2.0.*"
+    }
+}	

@@ -25,6 +25,9 @@ service {'mysql':
         ensure => running,
     }
 
+package {'git':
+    ensure => present
+}
 
 
 

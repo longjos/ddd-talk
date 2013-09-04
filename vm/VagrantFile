@@ -2,21 +2,23 @@
 # vi: set ft=ruby :
 
 
-Vagrant::Config.run do |config|
-    config.vm.define :phpserver do |log_config|
+Vagrant.configure("2") do |config|
+    config.vm.define :phpserver do |ddd_config|
 
-        log_config.vm.box = "precise64"
-        log_config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+        ddd_config.vm.box = "precise64"
+        ddd_config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
-        log_config.vm.host_name = "phpserver"
-        log_config.vm.network :hostonly, "192.168.33.14"
+        ddd_config.vm.hostname = "phpserver"
+        ddd_config.vm.network :private_network, ip: "192.168.33.14"
+
+        ddd_config.vm.synced_folder "../src/", "/opt/ddd-talk"
 
         # Enable provisioning with Puppet stand alone.  Puppet manifests
         # are contained in a directory path relative to this Vagrantfile.
         # You will need to create the manifests directory and a manifest in
         # the file base.pp in the manifests_path directory.
         #
-        log_config.vm.provision :puppet, :module_path => "modules" do |puppet|
+        ddd_config.vm.provision :puppet, :module_path => "modules" do |puppet|
             puppet.manifests_path = "manifests"
             puppet.manifest_file  = "phpserver.pp"
         end

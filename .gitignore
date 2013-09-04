@@ -1,3 +1,6 @@
+atlassian-ide-plugin.xml
+.idea
+/src/vendor
+/vendor
 composer.phar
 composer.lock
-vendor

@@ -1,1 +1,4 @@
 .vagrant
+src/vender
+src/composer.lock
+
