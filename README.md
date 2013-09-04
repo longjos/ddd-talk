@@ -1,4 +1,4 @@
-ddd-talk
+Speak the Language - Solving Problems using Domain Drive Design
 ========
 
 Project for Domain Driven Design Talk - Including Vagrant VM
