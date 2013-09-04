@@ -1,5 +1,5 @@
-Speak the Language - Solving Problems using Domain Drive Design
-========
+### Speak the Language - Solving Problems using Domain Driven Design
+
 
 Project for Domain Driven Design Talk - Including Vagrant VM
 
