@@ -21,11 +21,12 @@ class WindowOrder extends \Tracks\Model\AggregateRoot {
         $this->registerEvents();
     }
 
-    function openOrder(){
+    function openOrder(\Model\StoreLocation $store){
         $orderGuid = \Tracks\Model\Guid::create();
         $this->applyEvent(
             new EventOrderOpened(
                 $orderGuid,
+                $store->getGuid(),
                 new \DateTime()
             )
         );
@@ -88,6 +89,7 @@ class WindowOrder extends \Tracks\Model\AggregateRoot {
 
     protected function onOrderOpened(EventOrderOpened $event){
         $this->guid = $event->guid;
+        $this->storeGuid = $event->storeGuid;
     }
 
     protected function onOrderPlaced(EventOrderPlaced $event){
@@ -115,17 +117,21 @@ class WindowOrder extends \Tracks\Model\AggregateRoot {
     public $taxSubTotals;
     public $saleSubTotal;
     public $saleTotal;
+    public $storeGuid;
     protected $orderTotal;
     protected $taxStrategy;
+
 
 }
 
 class EventOrderOpened extends \Tracks\Event\Base {
     public function __construct(
         \Tracks\Model\Guid $guid,
+        \Tracks\Model\Guid $storeGuid,
         \DateTime $dateTimeOpened
     ) {
         parent::__construct($guid);
+        $this->storeGuid = $storeGuid;
         $this->dateTimeOpened = $dateTimeOpened;
     }
 
