@@ -6,10 +6,14 @@ class TaxRate {
         $taxStrategy = NULL;
         switch($taxParameters['plan']){
             case 'simple':
-                $taxStrategy = new \Strategy\SingleTaxCalculation($taxParameters['rates']['t-01']);
+                $taxStrategy = new \Strategy\SingleTaxCalculation(
+                    $taxParameters['rates']['t-01']
+                );
                 break;
             case 'complex':
-                $taxStrategy = new \Strategy\CategoryTaxCalculation($this->mapTaxIds($taxParameters['rates']));
+                $taxStrategy = new \Strategy\CategoryTaxCalculation(
+                    $this->mapTaxIds($taxParameters['rates'])
+                );
         }
         return $taxStrategy;
     }
@@ -29,7 +33,9 @@ class TaxRate {
     }
 
     protected function lookupTaxRatesForZipCode($zipCode){
-        $taxConfigResponse = json_decode(file_get_contents(dirname(__FILE__) . "/tax_config.json"), TRUE);
+        $taxConfigResponse = json_decode(
+            file_get_contents(dirname(__FILE__) . "/tax_config.json"), TRUE
+        );
         return $taxConfigResponse[$zipCode];
     }
 }

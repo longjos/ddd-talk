@@ -10,6 +10,8 @@
 namespace Model;
 
 
+use Repository\WindowOrderRepo;
+
 class WindowOrder extends \Tracks\Model\AggregateRoot {
 
     function __construct(\Strategy\ITaxCalculation $taxStrategy, \Service\Menu\Menu $menuService){
@@ -33,13 +35,13 @@ class WindowOrder extends \Tracks\Model\AggregateRoot {
         return $orderGuid;
     }
 
-    function addItem($itemId){
-        $menuItemDTO = $this->menu->getMenuItem($itemId);
+    function addItem($itemSKU){
+        $menuItemDTO = $this->menu->getMenuItem($itemSKU);
         $orderItemGuid = \Tracks\Model\Guid::create();
         $this->applyEvent(new EventItemAdded(
             $this->getGuid(),
             $orderItemGuid,
-            $itemId,
+            $itemSKU,
             $menuItemDTO['description'],
             $menuItemDTO['category'],
             $menuItemDTO['salePrice']
@@ -71,14 +73,13 @@ class WindowOrder extends \Tracks\Model\AggregateRoot {
         );
     }
 
-    function cancelOrder(){
-
-    }
-    function rejectOrder(){
-
-    }
-    function deliverOrder(){
-
+    function deliverOrder($customerSatisfactionScore){
+        $this->applyEvent(
+            new EventOrderDelivered(
+                $this->getGuid(),
+                $customerSatisfactionScore
+            )
+        );
     }
 
     private function registerEvents(){
@@ -90,12 +91,19 @@ class WindowOrder extends \Tracks\Model\AggregateRoot {
     protected function onOrderOpened(EventOrderOpened $event){
         $this->guid = $event->guid;
         $this->storeGuid = $event->storeGuid;
+        $this->orderStatus = WindowOrderStatus::OPEN;
     }
 
     protected function onOrderPlaced(EventOrderPlaced $event){
         $this->taxSubTotals = $event->taxSubTotals;
         $this->saleSubTotal = $event->subTotal;
         $this->saleTotal = $event->saleTotal;
+        $this->orderStatus = WindowOrderStatus::IN_PROGRESS;
+
+    }
+
+    protected function onOrderDelivered(EventOrderDelivered $event){
+        $this->orderStatus = WindowOrderStatus::DELIVERED;
     }
 
     protected function onItemAdded(EventItemAdded $event){
@@ -179,5 +187,23 @@ class EventOrderPlaced extends \Tracks\Event\Base {
     public $taxSubTotals;
     public $saleTotal;
     public $subTotal;
+}
 
+class EventOrderDelivered extends \Tracks\Event\Base {
+    public function __construct(
+        \Tracks\Model\Guid $guid,
+        $customerSatisfactionScore
+    ) {
+        parent::__construct($guid);
+        $this->customerSatisfactionScore = $customerSatisfactionScore;
+    }
+
+    public $customerSatisfactionScore;
+}
+
+
+class WindowOrderStatus {
+    const OPEN = 'open';
+    const IN_PROGRESS = 'in_progress';
+    const DELIVERED = 'delivered';
 }

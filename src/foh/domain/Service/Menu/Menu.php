@@ -13,7 +13,7 @@ class Menu {
     private $menuCache = array(
         'f01' => array(
             'description' => "Sandwich",
-            'salePrice' => 3.50,
+            'salePrice' => 4.50,
             'category' => 'food'
         ),
         'f02' => array(
