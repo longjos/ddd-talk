@@ -14,8 +14,7 @@ use Repository\WindowOrderRepo;
 
 class WindowOrder extends \Tracks\Model\AggregateRoot {
 
-    function __construct(\Strategy\ITaxCalculation $taxStrategy, \Service\Menu\Menu $menuService){
-        $this->menu = $menuService;
+    function __construct(\Strategy\ITaxCalculation $taxStrategy){
         $this->orderItems = new \Tracks\Model\EntityList();
         $this->orderTotal = 0.0;
         $this->preferredCustomer = NULL;
@@ -35,16 +34,15 @@ class WindowOrder extends \Tracks\Model\AggregateRoot {
         return $orderGuid;
     }
 
-    function addItem($itemSKU){
-        $menuItemDTO = $this->menu->getMenuItem($itemSKU);
+    function addItem(\Service\Menu\MenuItem $menuItem){
         $orderItemGuid = \Tracks\Model\Guid::create();
         $this->applyEvent(new EventItemAdded(
             $this->getGuid(),
             $orderItemGuid,
-            $itemSKU,
-            $menuItemDTO['description'],
-            $menuItemDTO['category'],
-            $menuItemDTO['salePrice']
+            $menuItem->itemSKU,
+            $menuItem->description,
+            $menuItem->category,
+            $menuItem->salePrice
         ));
         return $orderItemGuid;
     }

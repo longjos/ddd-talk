@@ -2,8 +2,15 @@
 namespace Service\Menu;
 
 class Menu {
+
     public function getMenuItem($menuItemId){
-        return $this->menuCache[$menuItemId];
+        $menuItem = $this->menuCache[$menuItemId];
+        return new MenuItem(
+            $menuItemId,
+            $menuItem['description'],
+            $menuItem['salePrice'],
+            $menuItem['category']
+        );
     }
 
     public function getMenuForStore(\Model\StoreLocation $store){
@@ -27,4 +34,23 @@ class Menu {
             'category' => 'alcohol'
         )
     );
+}
+
+class MenuItem {
+    public $itemSKU;
+    public $description;
+    public $salePrice;
+    public $category;
+
+    public function __construct(
+        $itemSKU,
+        $description,
+        $salePrice,
+        $category
+    ) {
+        $this->itemSKU = $itemSKU;
+        $this->description = $description;
+        $this->salePrice = $salePrice;
+        $this->category = $category;
+    }
 }
