@@ -9,3 +9,9 @@ This is a work in progress.
 * See the demo run with php src/foh/scripts/open_store.php
 
 The Vagrant VM is not complete at this time.
+
+
+#### Resources
+* http://www.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215
+* http://www.udidahan.com/
+* https://vaughnvernon.co/
