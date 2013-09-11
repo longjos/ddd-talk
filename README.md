@@ -3,4 +3,9 @@
 
 Project for Domain Driven Design Talk - Including Vagrant VM
 
-This is a work in progress at this time. Don't expect it to work right now.
+This is a work in progress.
+
+* Install the dependencies using composer
+* See the demo run with php src/foh/scripts/open_store.php
+
+The Vagrant VM is not complete at this time.
