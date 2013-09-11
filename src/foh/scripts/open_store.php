@@ -8,7 +8,7 @@ $repo = new \Tracks\EventStore\Repository(
 );
 
 $store = new \Model\StoreLocation();
-$storeGuid  = $store->openStore(1234, '12345');
+$storeGuid  = $store->openStore(1234, '37206');
 $repo->save($store);
 $menuService = new \Service\Menu\Menu();
 
@@ -23,11 +23,11 @@ $orderFactory = new \Factory\WindowOrder();
 $windowOrder = $orderFactory->makeWindowOrder($store);
 $windowOrderGuid = $windowOrder->openOrder($store);
 
-$firstItemGuid = $windowOrder->addItem($menuService->getMenuItem('f01'));
+$firstItemGuid = $windowOrder->addOrderItem($menuService->getMenuItem('f01'));
 $windowOrder->orderItems->find($firstItemGuid)->addSpecialInstructions('No Meat');
 
-$windowOrder->addItem($menuService->getMenuItem('f02'));
-$windowOrder->addItem($menuService->getMenuItem('a01'));
+$windowOrder->addOrderItem($menuService->getMenuItem('f02'));
+$windowOrder->addOrderItem($menuService->getMenuItem('a01'));
 $windowOrder->placeOrder();
 $windowOrder->deliverOrder(5);
 $windowOrderRepo->save($windowOrder);

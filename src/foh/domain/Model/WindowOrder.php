@@ -34,7 +34,7 @@ class WindowOrder extends \Tracks\Model\AggregateRoot {
         return $orderGuid;
     }
 
-    function addItem(\Service\Menu\MenuItem $menuItem){
+    function addOrderItem(\Service\Menu\MenuItem $menuItem){
         $orderItemGuid = \Tracks\Model\Guid::create();
         $this->applyEvent(new EventItemAdded(
             $this->getGuid(),
